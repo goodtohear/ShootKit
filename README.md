@@ -24,3 +24,6 @@ Important classes:
 `ShootControlsView` - manual controls for connected Shoot camera
 
 `VideoPencilClient` - connect to Video Pencil, send and receive video
+
+## Get help
+Find me @michaelforrest on [Discord](https://discord.gg/ZJBHyb5tTP)!

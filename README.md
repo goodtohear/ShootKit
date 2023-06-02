@@ -20,6 +20,7 @@ Clone this project and drag it into your Xcode project, then add ShootKit as a d
 Important classes:
 
 `ShootServer` - discover running instances of Shoot
+
 `ShootControlsView` - manual controls for connected Shoot camera
 
-`VideoPencilClient` - connect to Video Pencil, send and receive video. 
+`VideoPencilClient` - connect to Video Pencil, send and receive video

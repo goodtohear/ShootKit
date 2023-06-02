@@ -68,6 +68,10 @@ struct ShootCameraRow: View{
                 }
             }
         }
+        .onAppear{
+            selectedCameraName = camera.selectedSource?.title
+            camera.startVideoStream()
+        }
     }
 }
 

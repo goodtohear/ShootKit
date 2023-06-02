@@ -45,6 +45,8 @@
 		AC82EA252A2A279D006EE79D /* VideoPencilControlMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA242A2A279D006EE79D /* VideoPencilControlMessage.swift */; };
 		AC82EA282A2A291D006EE79D /* VideoPencilState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA262A2A28F1006EE79D /* VideoPencilState.swift */; };
 		AC82EA2B2A2A34B9006EE79D /* CameraSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA292A2A33ED006EE79D /* CameraSource.swift */; };
+		AC82EA2F2A2A43D9006EE79D /* SampleBufferDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA2E2A2A43D9006EE79D /* SampleBufferDisplayView.m */; };
+		AC82EA372A2A5191006EE79D /* CameraSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA362A2A5191006EE79D /* CameraSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,13 @@
 			remoteInfo = ShootKit;
 		};
 		AC82E9B12A29E2A6006EE79D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC2956AE2A29E14B00EC6CE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC2956B62A29E14B00EC6CE7;
+			remoteInfo = ShootKit;
+		};
+		AC82EA302A2A465B006EE79D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AC2956AE2A29E14B00EC6CE7 /* Project object */;
 			proxyType = 1;
@@ -113,6 +122,10 @@
 		AC82EA242A2A279D006EE79D /* VideoPencilControlMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPencilControlMessage.swift; sourceTree = "<group>"; };
 		AC82EA262A2A28F1006EE79D /* VideoPencilState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPencilState.swift; sourceTree = "<group>"; };
 		AC82EA292A2A33ED006EE79D /* CameraSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSource.swift; sourceTree = "<group>"; };
+		AC82EA2D2A2A43D9006EE79D /* SampleBufferDisplayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleBufferDisplayView.h; sourceTree = "<group>"; };
+		AC82EA2E2A2A43D9006EE79D /* SampleBufferDisplayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleBufferDisplayView.m; sourceTree = "<group>"; };
+		AC82EA352A2A5191006EE79D /* CameraSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraSource.h; sourceTree = "<group>"; };
+		AC82EA362A2A5191006EE79D /* CameraSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +273,7 @@
 		AC82E9CF2A29E37C006EE79D /* App */ = {
 			isa = PBXGroup;
 			children = (
+				AC82EA2C2A2A43B5006EE79D /* Lib */,
 				AC82E9C52A29E33D006EE79D /* Main.storyboard */,
 				AC82E9BD2A29E33D006EE79D /* AppDelegate.h */,
 				AC82E9BE2A29E33D006EE79D /* AppDelegate.m */,
@@ -321,6 +335,7 @@
 		AC82E9E22A29E901006EE79D /* Shoot */ = {
 			isa = PBXGroup;
 			children = (
+				AC82E9EA2A29E91F006EE79D /* ShootServer.swift */,
 				AC82E9F82A29E988006EE79D /* Camera */,
 			);
 			path = Shoot;
@@ -359,7 +374,6 @@
 				AC82E9E62A29E91F006EE79D /* ShootCamera.swift */,
 				AC82E9E92A29E91F006EE79D /* ShootControlsView.swift */,
 				AC82E9E82A29E91F006EE79D /* ShootRemoteCommands.swift */,
-				AC82E9EA2A29E91F006EE79D /* ShootServer.swift */,
 				AC82E9EB2A29E91F006EE79D /* SliderScales.swift */,
 			);
 			path = Camera;
@@ -392,6 +406,17 @@
 				AC82EA122A29F3CE006EE79D /* Formatter+Extensions.swift */,
 			);
 			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		AC82EA2C2A2A43B5006EE79D /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				AC82EA2D2A2A43D9006EE79D /* SampleBufferDisplayView.h */,
+				AC82EA2E2A2A43D9006EE79D /* SampleBufferDisplayView.m */,
+				AC82EA352A2A5191006EE79D /* CameraSource.h */,
+				AC82EA362A2A5191006EE79D /* CameraSource.m */,
+			);
+			path = Lib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -473,6 +498,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AC82EA312A2A465B006EE79D /* PBXTargetDependency */,
 			);
 			name = "Objective-C Sample";
 			productName = "Objective-C Sample";
@@ -614,7 +640,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC82EA372A2A5191006EE79D /* CameraSource.m in Sources */,
 				AC82E9C22A29E33D006EE79D /* ViewController.m in Sources */,
+				AC82EA2F2A2A43D9006EE79D /* SampleBufferDisplayView.m in Sources */,
 				AC82E9C92A29E33D006EE79D /* main.m in Sources */,
 				AC82E9BF2A29E33D006EE79D /* AppDelegate.m in Sources */,
 			);
@@ -632,6 +660,11 @@
 			isa = PBXTargetDependency;
 			target = AC2956B62A29E14B00EC6CE7 /* ShootKit */;
 			targetProxy = AC82E9B12A29E2A6006EE79D /* PBXContainerItemProxy */;
+		};
+		AC82EA312A2A465B006EE79D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC2956B62A29E14B00EC6CE7 /* ShootKit */;
+			targetProxy = AC82EA302A2A465B006EE79D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -929,6 +962,7 @@
 		AC82E9CC2A29E33D006EE79D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Sample Projects/Objective-C Sample/Objective_C_Sample.entitlements";
@@ -938,7 +972,8 @@
 				DEVELOPMENT_TEAM = TNRLJ4WU59;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Objective-C-Sample-Info.plist";
+				INFOPLIST_FILE = "Sample Projects/Objective-C Sample/Objective-C-Sample-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Used to demo Video Pencil connection using your Mac's camera";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Required to discover and connect to devices running Shoot or Video Pencil";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
@@ -957,6 +992,7 @@
 		AC82E9CD2A29E33D006EE79D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Sample Projects/Objective-C Sample/Objective_C_Sample.entitlements";
@@ -966,7 +1002,8 @@
 				DEVELOPMENT_TEAM = TNRLJ4WU59;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Objective-C-Sample-Info.plist";
+				INFOPLIST_FILE = "Sample Projects/Objective-C Sample/Objective-C-Sample-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Used to demo Video Pencil connection using your Mac's camera";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Required to discover and connect to devices running Shoot or Video Pencil";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;

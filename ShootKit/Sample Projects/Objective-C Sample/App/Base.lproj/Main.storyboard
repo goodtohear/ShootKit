@@ -687,7 +687,7 @@ DQ
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="ShootKit Sample" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="ShootKit Objective-C Sample" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -709,13 +709,168 @@ DQ
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="492" height="469"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <tabView translatesAutoresizingMaskIntoConstraints="NO" id="JGj-C3-hYM">
+                                <rect key="frame" x="13" y="10" width="466" height="453"/>
+                                <font key="font" metaFont="system"/>
+                                <tabViewItems>
+                                    <tabViewItem label="Shoot" identifier="" id="f7k-7J-9WK">
+                                        <view key="view" id="drn-8K-JNv">
+                                            <rect key="frame" x="10" y="33" width="446" height="407"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kRO-7r-UU9">
+                                                    <rect key="frame" x="0.0" y="0.0" width="446" height="407"/>
+                                                    <subviews>
+                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="v6y-Mn-T7v" customClass="SampleBufferDisplayView">
+                                                            <rect key="frame" x="0.0" y="156" width="446" height="251"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="v6y-Mn-T7v" secondAttribute="height" multiplier="16:9" id="F54-xU-Rad"/>
+                                                            </constraints>
+                                                        </customView>
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="753" translatesAutoresizingMaskIntoConstraints="NO" id="cd3-3Z-weE">
+                                                            <rect key="frame" x="42" y="130" width="363" height="16"/>
+                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Launch Shoot on a device on the same network as this Mac" id="9lV-9v-pcA">
+                                                                <font key="font" usesAppearanceFont="YES"/>
+                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                        <customView verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="NJc-8O-1MX">
+                                                            <rect key="frame" x="20" y="20" width="406" height="100"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" priority="250" constant="100" placeholder="YES" id="LXV-rL-VBa"/>
+                                                            </constraints>
+                                                        </customView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="v6y-Mn-T7v" secondAttribute="trailing" id="nCo-rS-nDX"/>
+                                                        <constraint firstAttribute="trailing" secondItem="NJc-8O-1MX" secondAttribute="trailing" constant="20" id="nd2-Wf-1bg"/>
+                                                        <constraint firstItem="NJc-8O-1MX" firstAttribute="top" secondItem="cd3-3Z-weE" secondAttribute="bottom" constant="10" id="p84-vd-Bgy"/>
+                                                        <constraint firstAttribute="bottom" secondItem="NJc-8O-1MX" secondAttribute="bottom" constant="20" id="pqM-AD-WV1"/>
+                                                        <constraint firstItem="NJc-8O-1MX" firstAttribute="leading" secondItem="kRO-7r-UU9" secondAttribute="leading" constant="20" id="uis-cU-jOH"/>
+                                                        <constraint firstItem="v6y-Mn-T7v" firstAttribute="leading" secondItem="kRO-7r-UU9" secondAttribute="leading" id="vF4-Cn-jve"/>
+                                                    </constraints>
+                                                    <visibilityPriorities>
+                                                        <integer value="1000"/>
+                                                        <integer value="1000"/>
+                                                        <integer value="1000"/>
+                                                    </visibilityPriorities>
+                                                    <customSpacing>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                    </customSpacing>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="kRO-7r-UU9" secondAttribute="bottom" id="4ck-xB-Sip"/>
+                                                <constraint firstItem="kRO-7r-UU9" firstAttribute="top" secondItem="drn-8K-JNv" secondAttribute="top" id="AzH-qd-ZIA"/>
+                                                <constraint firstItem="kRO-7r-UU9" firstAttribute="leading" secondItem="drn-8K-JNv" secondAttribute="leading" id="iaB-DN-Lq6"/>
+                                                <constraint firstAttribute="trailing" secondItem="kRO-7r-UU9" secondAttribute="trailing" id="xCL-bO-KJA"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="Video Pencil" identifier="" id="U9s-04-03a">
+                                        <view key="view" id="DuY-wt-iqc">
+                                            <rect key="frame" x="10" y="33" width="446" height="267"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pfz-Sc-yWl">
+                                                    <rect key="frame" x="0.0" y="0.0" width="446" height="267"/>
+                                                    <subviews>
+                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="brk-aZ-pOQ">
+                                                            <rect key="frame" x="0.0" y="16" width="446" height="251"/>
+                                                            <subviews>
+                                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ILp-8L-tOd" customClass="SampleBufferDisplayView">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="446" height="251"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="ILp-8L-tOd" secondAttribute="height" multiplier="16:9" id="ivp-nt-2Yb"/>
+                                                                    </constraints>
+                                                                </customView>
+                                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Cq0-lc-i2x" customClass="SampleBufferDisplayView">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="446" height="251"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="Cq0-lc-i2x" secondAttribute="height" multiplier="16:9" id="Xq4-I6-51l"/>
+                                                                    </constraints>
+                                                                </customView>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstItem="ILp-8L-tOd" firstAttribute="top" secondItem="brk-aZ-pOQ" secondAttribute="top" id="5nm-Bc-hII"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Cq0-lc-i2x" secondAttribute="bottom" id="BD4-Cd-aho"/>
+                                                                <constraint firstItem="Cq0-lc-i2x" firstAttribute="top" secondItem="brk-aZ-pOQ" secondAttribute="top" id="Eor-o5-mv6"/>
+                                                                <constraint firstItem="Cq0-lc-i2x" firstAttribute="leading" secondItem="brk-aZ-pOQ" secondAttribute="leading" id="NPr-OZ-HRK"/>
+                                                                <constraint firstItem="Cq0-lc-i2x" firstAttribute="width" secondItem="Cq0-lc-i2x" secondAttribute="height" multiplier="16:9" id="R2y-Au-GJe"/>
+                                                                <constraint firstItem="Cq0-lc-i2x" firstAttribute="width" secondItem="Cq0-lc-i2x" secondAttribute="height" multiplier="16:9" id="TMA-FQ-j4W"/>
+                                                                <constraint firstItem="ILp-8L-tOd" firstAttribute="width" secondItem="ILp-8L-tOd" secondAttribute="height" multiplier="16:9" id="VYy-CZ-BIe"/>
+                                                                <constraint firstItem="ILp-8L-tOd" firstAttribute="width" secondItem="ILp-8L-tOd" secondAttribute="height" multiplier="16:9" id="Vcp-1z-eWt"/>
+                                                                <constraint firstItem="Cq0-lc-i2x" firstAttribute="width" secondItem="Cq0-lc-i2x" secondAttribute="height" multiplier="16:9" id="Yvf-Am-wap"/>
+                                                                <constraint firstAttribute="trailing" secondItem="ILp-8L-tOd" secondAttribute="trailing" id="ZRt-wP-HqW"/>
+                                                                <constraint firstItem="ILp-8L-tOd" firstAttribute="leading" secondItem="brk-aZ-pOQ" secondAttribute="leading" id="hwI-5G-pET"/>
+                                                                <constraint firstAttribute="bottom" secondItem="ILp-8L-tOd" secondAttribute="bottom" id="lap-BZ-PIg"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Cq0-lc-i2x" secondAttribute="trailing" id="nwb-Sh-8xx"/>
+                                                                <constraint firstAttribute="width" secondItem="brk-aZ-pOQ" secondAttribute="height" multiplier="16:9" id="sc7-Jz-7iY"/>
+                                                            </constraints>
+                                                        </customView>
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dIJ-IN-LK2">
+                                                            <rect key="frame" x="22" y="0.0" width="402" height="16"/>
+                                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Launch Video Pencil on a device on the same network as this Mac" id="lGQ-QP-xnk">
+                                                                <font key="font" usesAppearanceFont="YES"/>
+                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="brk-aZ-pOQ" firstAttribute="width" secondItem="brk-aZ-pOQ" secondAttribute="height" multiplier="16:9" id="4hd-Qm-nez"/>
+                                                        <constraint firstAttribute="trailing" secondItem="brk-aZ-pOQ" secondAttribute="trailing" id="MDY-iI-SMU"/>
+                                                        <constraint firstItem="brk-aZ-pOQ" firstAttribute="leading" secondItem="Pfz-Sc-yWl" secondAttribute="leading" id="sXf-gR-WtG"/>
+                                                        <constraint firstItem="brk-aZ-pOQ" firstAttribute="top" secondItem="Pfz-Sc-yWl" secondAttribute="top" id="x9E-py-AQO"/>
+                                                    </constraints>
+                                                    <visibilityPriorities>
+                                                        <integer value="1000"/>
+                                                        <integer value="1000"/>
+                                                    </visibilityPriorities>
+                                                    <customSpacing>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                        <real value="3.4028234663852886e+38"/>
+                                                    </customSpacing>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Pfz-Sc-yWl" firstAttribute="leading" secondItem="DuY-wt-iqc" secondAttribute="leading" id="0qW-5C-f5A"/>
+                                                <constraint firstAttribute="trailing" secondItem="Pfz-Sc-yWl" secondAttribute="trailing" id="Nw4-XU-ScQ"/>
+                                                <constraint firstItem="Pfz-Sc-yWl" firstAttribute="top" secondItem="DuY-wt-iqc" secondAttribute="top" id="fdu-fR-HBw"/>
+                                                <constraint firstAttribute="bottom" secondItem="Pfz-Sc-yWl" secondAttribute="bottom" id="mXx-MI-ydf"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                </tabViewItems>
+                            </tabView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="JGj-C3-hYM" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="12" symbolic="YES" id="Kyl-iQ-AJT"/>
+                            <constraint firstItem="JGj-C3-hYM" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="PTu-LW-cNZ"/>
+                            <constraint firstAttribute="bottom" secondItem="JGj-C3-hYM" secondAttribute="bottom" constant="20" id="TAD-dk-L4g"/>
+                            <constraint firstAttribute="trailing" secondItem="JGj-C3-hYM" secondAttribute="trailing" constant="20" symbolic="YES" id="WeF-aG-f7U"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cameraPreview" destination="ILp-8L-tOd" id="zmg-Xh-XYA"/>
+                        <outlet property="shootCameraView" destination="v6y-Mn-T7v" id="z7p-KW-PeK"/>
+                        <outlet property="shootControlsContainer" destination="NJc-8O-1MX" id="f1H-ie-26z"/>
+                        <outlet property="shootInfoLabel" destination="cd3-3Z-weE" id="C2R-N5-ez1"/>
+                        <outlet property="shootStackView" destination="kRO-7r-UU9" id="dqu-4U-bv0"/>
+                        <outlet property="videoPencilLabel" destination="dIJ-IN-LK2" id="QOX-4c-ZaV"/>
+                        <outlet property="videoPencilLayerView" destination="Cq0-lc-i2x" id="Tb2-1o-HSA"/>
+                        <outlet property="videoPencilStackView" destination="Pfz-Sc-yWl" id="3Cs-5y-CdY"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="654.5"/>
         </scene>
     </scenes>
 </document>

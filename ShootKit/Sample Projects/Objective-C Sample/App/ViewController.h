@@ -6,9 +6,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@import ShootKit;
+
 
 @interface ViewController : NSViewController
-
-
 @end
 

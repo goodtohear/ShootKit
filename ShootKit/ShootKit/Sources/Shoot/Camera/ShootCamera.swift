@@ -10,20 +10,23 @@ import Network
 import AppKit
 import VideoToolbox
 
-public protocol ShootCameraDelegate:AnyObject{
+@objc public protocol ShootCameraDelegate:AnyObject{
+    var shootCameraShouldCreateSampleBuffers: Bool { get }
     func shootCameraWasIdentified(camera: ShootCamera) // we have the name
     func shootCameraWasDisconnected(camera: ShootCamera)
+    func shootCamera(camera: ShootCamera, didReceiveSampleBuffer sampleBuffer: CMSampleBuffer)
+    func shootCamera(camera: ShootCamera, didReceivePixelBuffer pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime)
 }
 
-public class ShootCamera: ObservableObject, Identifiable{
+@objc public class ShootCamera: NSObject, ObservableObject, Identifiable{
    
     public var logger = BaseConnectionLogger()
     var connection: NWConnection
     weak var delegate: ShootCameraDelegate?
     public var id:String{ name }
     
-    public var latestSampleBuffer: CMSampleBuffer?
-    public var latestPixelBuffer: CVPixelBuffer?
+    @objc public var latestSampleBuffer: CMSampleBuffer?
+    @objc public var latestPixelBuffer: CVPixelBuffer?
 //    var latestPixelBufferAsCGImage: CGImage?
         
     @Published public var isRunning = false
@@ -39,7 +42,7 @@ public class ShootCamera: ObservableObject, Identifiable{
     
 
     
-    @Published public var name = ""
+    @Published @objc public var name = ""
     
     private let queue = DispatchQueue(label: "Shoot Connection Queue", qos: .userInitiated)
 
@@ -54,6 +57,7 @@ public class ShootCamera: ObservableObject, Identifiable{
     init(connection: NWConnection, delegate: ShootCameraDelegate){
         self.connection = connection
         self.delegate = delegate
+        super.init()
         connection.stateUpdateHandler = handleConnectionStateChanges
         connection.start(queue: queue)
         
@@ -137,12 +141,12 @@ public class ShootCamera: ObservableObject, Identifiable{
         awaitNextMessage()
     }
     
-    public func startVideoStream(){
+    @objc public func startVideoStream(){
         sendFramedMessage(data: "start".data(using: .utf8), id: "video stream for \(id)", type: .requestVideoStream)
         isRunning = true
     }
     
-    public func stopVideoStream(){
+    @objc public func stopVideoStream(){
         sendFramedMessage(data: "stop".data(using: .utf8), id: "video stream should end", type: .cancelVideoStream)
         isRunning = false
     }
@@ -267,7 +271,7 @@ public class ShootCamera: ObservableObject, Identifiable{
     public func send(toggle: VideoSourceControlToggle){
         send(command: .controlToggle, values: [toggle])
     }
-    public func select(sourceNamed name: String){
+    @objc public func select(sourceNamed name: String){
         if let source = sources.first(where: {$0.title == name}){
             select(sourceId: source.id)
         }
@@ -306,29 +310,24 @@ public class ShootCamera: ObservableObject, Identifiable{
     }
 }
 
-extension ShootCamera: Equatable{
-    public static func == (lhs: ShootCamera, rhs: ShootCamera) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-extension ShootCamera: Hashable{
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
-
 extension ShootCamera: H265DecoderDelegate{
     
-    var shouldCreateSampleBuffers: Bool { true }
+    var shouldCreateSampleBuffers: Bool {
+        delegate?.shootCameraShouldCreateSampleBuffers ?? true
+    }
     
     func videoDecoderDidDecodePixelBuffer(_ decoder: H265Decoder, pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
-        self.latestPixelBuffer = pixelBuffer
+        DispatchQueue.main.async {
+            self.latestPixelBuffer = pixelBuffer
+            self.delegate?.shootCamera(camera: self, didReceivePixelBuffer: pixelBuffer, presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
+        }
     }
     
     func videoDecoderDidDecodeSampleBuffer(_ decoder: H265Decoder, sampleBuffer: CMSampleBuffer) {
-        self.latestSampleBuffer = sampleBuffer
+        DispatchQueue.main.async {
+            self.latestSampleBuffer = sampleBuffer
+            self.delegate?.shootCamera(camera: self, didReceiveSampleBuffer: sampleBuffer)
+        }
     }
     
     func videoDecoder(_ decoder: H265Decoder, failedWith error: OSStatus) {

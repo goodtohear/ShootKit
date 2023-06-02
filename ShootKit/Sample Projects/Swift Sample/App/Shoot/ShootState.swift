@@ -21,6 +21,8 @@ class ShootState: ObservableObject{
 }
 
 extension ShootState: ShootServerDelegate{
+ 
+    
     func shootServerDidDiscover(camera: ShootKit.ShootCamera) {
         DispatchQueue.main.async {
             self.cameras.insert(camera)
@@ -32,6 +34,14 @@ extension ShootState: ShootServerDelegate{
             self.cameras.remove(camera)
         }
     }
+    var shootCameraShouldCreateSampleBuffers: Bool { true }
     
+    func shootCameraWasIdentified(camera: ShootKit.ShootCamera) { }
+    
+    func shootCameraWasDisconnected(camera: ShootKit.ShootCamera) { }
+    
+    func shootCamera(camera: ShootKit.ShootCamera, didReceiveSampleBuffer sampleBuffer: CMSampleBuffer) { }
+    
+    func shootCamera(camera: ShootKit.ShootCamera, didReceivePixelBuffer pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) { }
     
 }

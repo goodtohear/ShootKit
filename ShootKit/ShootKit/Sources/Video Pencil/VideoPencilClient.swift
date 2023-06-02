@@ -10,7 +10,7 @@ import Network
 import VideoToolbox
 import AppKit
 
-public protocol VideoPencilClientDelegate: AnyObject{
+@objc public protocol VideoPencilClientDelegate: AnyObject{
     var videoPencilClientShouldCreateSampleBuffers: Bool { get }
     
     func videoPencilDidConnect(_ client: VideoPencilClient)
@@ -20,10 +20,10 @@ public protocol VideoPencilClientDelegate: AnyObject{
     func videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer)
 }
 
-public class VideoPencilClient: NSObject, ObservableObject{
+@objc public class VideoPencilClient: NSObject, ObservableObject{
     public var logger = BaseConnectionLogger()
     
-    var name: String
+    @objc public var name: String
     
     @Published var hasReceivedControlMessage = false
     @Published var mostRecentVideoSelection: String?
@@ -46,7 +46,7 @@ public class VideoPencilClient: NSObject, ObservableObject{
     
     weak var delegate: VideoPencilClientDelegate?
     
-    public init(name: String, delegate: VideoPencilClientDelegate){
+    @objc public init(name: String, delegate: VideoPencilClientDelegate){
         self.name = name
         self.delegate = delegate
         super.init()
@@ -116,7 +116,9 @@ public class VideoPencilClient: NSObject, ObservableObject{
         guard let connection = connection else { return }
         switch(newState){
         case .ready:
-            delegate?.videoPencilDidConnect(self)
+            DispatchQueue.main.async {
+                self.delegate?.videoPencilDidConnect(self)
+            }
             log(message: "Video Pencil connection ready, awaiting message", color: .systemMint)
             connection.send(content: name.data(using: .unicode), completion: .idempotent)
             awaitNextMessage()
@@ -130,8 +132,10 @@ public class VideoPencilClient: NSObject, ObservableObject{
         case .cancelled:
             // guaranteed to be final
             log(message: "Video Pencil connection cancelled \(connection.endpoint.debugDescription)", color: .systemRed)
-            self.connection = nil
-            delegate?.videoPencilDidDisconnect(self)
+            DispatchQueue.main.async {
+                self.connection = nil
+                self.delegate?.videoPencilDidDisconnect(self)
+            }
         default: // preparing
             log(message: "Video Pencil Connection state changed to \(newState)", color: .orange)
             break
@@ -223,7 +227,7 @@ public class VideoPencilClient: NSObject, ObservableObject{
         decoder?.decode(frame)
     }
     
-    public func send(sampleBuffer: CMSampleBuffer){
+    @objc public func send(sampleBuffer: CMSampleBuffer){
         guard let connection = connection,
               let encoder = encoder,
               connection.state == .ready
@@ -305,7 +309,9 @@ extension VideoPencilClient: H265DecoderDelegate{
         delegate?.videoPencilDidReceive(from: self, pixelBuffer: pixelBuffer)
     }
     func videoDecoderDidDecodeSampleBuffer(_ decoder: H265Decoder, sampleBuffer: CMSampleBuffer) {
-        delegate?.videoPencilDidReceive(from: self, sampleBuffer: sampleBuffer)
+        DispatchQueue.main.async {
+            self.delegate?.videoPencilDidReceive(from: self, sampleBuffer: sampleBuffer)
+        }
     }
     func videoDecoder(_ decoder: H265Decoder, failedWith error: OSStatus) {
         

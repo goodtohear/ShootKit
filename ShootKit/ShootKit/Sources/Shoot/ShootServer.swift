@@ -8,13 +8,14 @@
 import Foundation
 import Network
 import AppKit
+import AVKit
 
-public protocol ShootServerDelegate{
+@objc public protocol ShootServerDelegate: AnyObject, ShootCameraDelegate{
     func shootServerDidDiscover(camera: ShootCamera)
     func shootServerWasDisconnected(from camera: ShootCamera)
 }
 
-public class ShootServer: ObservableObject{
+@objc public class ShootServer: NSObject, ObservableObject{
     public let logger = BaseConnectionLogger()
     private var bonjourListener: NWListener?
     private let queue = DispatchQueue(label: "Shoot Connection Queue", qos: .userInitiated)
@@ -24,9 +25,10 @@ public class ShootServer: ObservableObject{
     var name: String
     public var delegate: ShootServerDelegate?
    
-    public init(name: String, delegate: ShootServerDelegate?){
+    @objc public init(name: String, delegate: ShootServerDelegate?){
         self.name = name
         self.delegate = delegate
+        super.init()
         startBonjourServer()
     }
     
@@ -53,6 +55,18 @@ public class ShootServer: ObservableObject{
     }
 }
 extension ShootServer: ShootCameraDelegate{
+    public var shootCameraShouldCreateSampleBuffers: Bool {
+        delegate?.shootCameraShouldCreateSampleBuffers ?? true
+    }
+    
+    public func shootCamera(camera: ShootCamera, didReceiveSampleBuffer sampleBuffer: CMSampleBuffer) {
+        delegate?.shootCamera(camera: camera, didReceiveSampleBuffer: sampleBuffer)
+    }
+    
+    public func shootCamera(camera: ShootCamera, didReceivePixelBuffer pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
+        delegate?.shootCamera(camera: camera, didReceivePixelBuffer: pixelBuffer, presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
+    }
+    
     public func shootCameraWasIdentified(camera: ShootCamera) {
         delegate?.shootServerDidDiscover(camera: camera)
     }

@@ -9,8 +9,7 @@ import Foundation
 import ShootKit
 import AVKit
 
-class ShootState: ObservableObject, SampleBufferSource{
-    var latestSampleBuffer: CMSampleBuffer?
+class ShootState: ObservableObject{
     
     var shootServer: ShootServer?
     
@@ -23,11 +22,15 @@ class ShootState: ObservableObject, SampleBufferSource{
 
 extension ShootState: ShootServerDelegate{
     func shootServerDidDiscover(camera: ShootKit.ShootCamera) {
-        cameras.insert(camera)
+        DispatchQueue.main.async {
+            self.cameras.insert(camera)
+        }
     }
     
     func shootServerWasDisconnected(from camera: ShootKit.ShootCamera) {
-        cameras.remove(camera)
+        DispatchQueue.main.async {
+            self.cameras.remove(camera)
+        }
     }
     
     

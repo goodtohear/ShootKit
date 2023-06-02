@@ -11,7 +11,7 @@ ShootKit lets you add [Shoot](https://squares.tv/shoot) and [Video Pencil](https
 * Bi-directional Video Pencil feeds - send a reference layer to Video Pencil and receive a transparent overlay back
 
 ## Try it out
-Check the sample projects [Swift](ShootKit/Sample Projects/Swift Sample) [Objective-C](ShootKit/Sample Projects/Objective-C Sample)
+Check the sample projects [Swift](ShootKit/Sample%20Projects/Swift%20Sample) [Objective-C](ShootKit/Sample%20Projects/Objective-C%20Sample)
 
 ## Add to your project
 * Drag the project 

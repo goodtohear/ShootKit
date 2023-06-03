@@ -17,8 +17,8 @@ extension ShootSettings.FaceFollow{
 }
 
 public class ShootControlsViewFactory: NSObject{
-    @objc public static func makeShootControls(for camera: ShootCamera)->NSViewController{
-        NSHostingController(rootView: ShootControlsView(camera: camera))
+    @objc public static func makeShootControls(for camera: ShootCamera, minWidth: CGFloat=300)->NSViewController{
+        NSHostingController(rootView: ShootControlsView(camera: camera).padding().frame(minWidth: minWidth))
     }
 }
 

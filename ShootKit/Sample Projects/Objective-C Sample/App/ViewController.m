@@ -16,10 +16,10 @@
     NSMutableSet<ShootCamera*>*shootCameras;
     CMSampleBufferRef latestVideoPencilBuffer;
     CMSampleBufferRef latestCameraBuffer;
+    NSViewController * shootControlsViewController;
 }
 
 @property(strong, nonatomic) ShootServer * shootServer;
-@property(strong, nonatomic) NSViewController * shootControlsViewController;
 
 @property(strong, nonatomic) VideoPencilClient * videoPencilClient;
 
@@ -73,23 +73,19 @@
     }];
     
     // Add the camera controls
-    if(self.shootControlsViewController != nil) return;
+    if(shootControlsViewController != nil) return;
     
-    self.shootControlsViewController = [ShootControlsViewFactory makeShootControlsFor:camera];
+    shootControlsViewController = [ShootControlsViewFactory makeShootControlsFor:camera minWidth: 300];
     
-    [self addChildViewController:self.shootControlsViewController];
-    [self.shootStackView addArrangedSubview:self.shootControlsViewController.view];
-    [[self.shootControlsViewController.view.widthAnchor constraintGreaterThanOrEqualToConstant:300] setActive:true];
-    [self.shootControlsViewController.view setContentCompressionResistancePriority:NSLayoutPriorityRequired forOrientation:NSLayoutConstraintOrientationVertical];
+    NSWindow *floatingWindow = [[NSWindow alloc] initWithContentRect: NSMakeRect(300, 300, 600, 400)
+                                                           styleMask: NSWindowStyleMaskResizable  | NSWindowStyleMaskTitled | NSWindowStyleMaskHUDWindow
+                                                             backing: NSBackingStoreBuffered
+                                                               defer: NO];
+    [floatingWindow setTitle: camera.name];
+    [floatingWindow setLevel: NSNormalWindowLevel];
+    [floatingWindow setContentViewController: shootControlsViewController];
+    [floatingWindow makeKeyAndOrderFront:nil];
     
-//    [self.shootControlsContainer addSubview:self.shootControlsViewController.view];
-//    self.shootControlsViewController.view.translatesAutoresizingMaskIntoConstraints = true;
-    
-//    [[self.shootControlsViewController.view.leadingAnchor constraintEqualToAnchor: self.shootControlsContainer.leadingAnchor] setActive:true];
-//    [[self.shootControlsViewController.view.trailingAnchor constraintEqualToAnchor: self.shootControlsContainer.trailingAnchor] setActive:true];
-//    [[self.shootControlsViewController.view.topAnchor constraintEqualToAnchor: self.shootControlsContainer.topAnchor] setActive:true];
-//    [[self.shootControlsViewController.view.bottomAnchor constraintEqualToAnchor: self.shootControlsContainer.bottomAnchor] setActive:true];
-//    [[self.shootControlsViewController.view.widthAnchor constraintEqualToConstant: 400] setActive:true];
 }
 
 - (void)shootServerWasDisconnectedFrom:(ShootCamera * _Nonnull)camera {

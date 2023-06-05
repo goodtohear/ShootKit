@@ -40,7 +40,7 @@ Important classes:
 
 `VideoPencilClient` - connect to Video Pencil, send and receive video
   - `send(sampleBuffer:CMSampleBuffer)` -> Send feed to Video Pencil
-  - `videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer)` -> recieve transparent video feed in your delegate
+  - `videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer)` -> receive transparent video feed in your delegate
 
 ## Get help
 Find me @michaelforrest on [Discord](https://discord.gg/ZJBHyb5tTP)!

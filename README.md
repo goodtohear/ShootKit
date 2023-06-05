@@ -17,13 +17,25 @@ Check the sample projects
 
 Clone this project and drag it into your Xcode project, then add ShootKit as a dependency to your project.
 
+You'll need to enable the following under **Bonjour services** in your Info.plist:
+
+For Shoot: `_shoot_receiver._tcp`
+
+For Video Pencil: `_videopencil_ios._tcp`
+
+
 Important classes:
 
 `ShootServer` - discover running instances of Shoot
+ - delegate callbacks when devices discovered
+ - receive callbacks with CMSampleBuffers on the server delegate or on individual camera delegates
 
 `ShootControlsView` - manual controls for connected Shoot camera
+ - Instantiate in SwiftUI or using `ShootControlsViewFactory.makeShootControls(for camera: minWidth:)->NSViewController`
 
 `VideoPencilClient` - connect to Video Pencil, send and receive video
+  - `send(sampleBuffer:CMSampleBuffer)` -> Send feed to Video Pencil
+  - `videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer)` -> recieve transparent video feed in your delegate
 
 ## Get help
 Find me @michaelforrest on [Discord](https://discord.gg/ZJBHyb5tTP)!

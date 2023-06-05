@@ -12,7 +12,7 @@ struct ShootDemoView: View {
     @StateObject var state = ShootState()
     var body: some View {
         VStack(spacing: 16) {
-            if state.cameras.count == 0{
+            if state.shootCameras.count == 0{
                 ProgressView {
                     Text("Launch Shoot on a device on the same network as this Mac")
                 }
@@ -22,8 +22,8 @@ struct ShootDemoView: View {
                     Text("Get Shoot")
                 }
             }
-            ForEach(Array(state.cameras)){ camera in
-                ShootCameraRow(camera: camera, selectedCameraName: camera.selectedSource?.title)
+            ForEach(Array(state.shootCameras)){ camera in
+                ShootCameraRow(camera: camera, selectedSourceName: camera.selectedSource?.title)
             }
         }
         .padding()
@@ -34,7 +34,7 @@ extension ShootCamera: SampleBufferSource{}
 
 struct ShootCameraRow: View{
     @ObservedObject var camera: ShootCamera
-    @State var selectedCameraName: String?
+    @State var selectedSourceName: String?
     var body: some View{
         VStack {
             HStack{
@@ -55,10 +55,10 @@ struct ShootCameraRow: View{
                     }
                 }
             }
-            Picker("Camera", selection: .init(get: {
-                selectedCameraName
+            Picker("Shoot Source", selection: .init(get: {
+                selectedSourceName
             }, set: { value in
-                selectedCameraName = value
+                selectedSourceName = value
                 if let value = value{
                     camera.select(sourceNamed: value)
                 }
@@ -69,7 +69,7 @@ struct ShootCameraRow: View{
             }
         }
         .onAppear{
-            selectedCameraName = camera.selectedSource?.title
+            selectedSourceName = camera.selectedSource?.title
             camera.startVideoStream()
         }
     }

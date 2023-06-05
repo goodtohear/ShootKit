@@ -13,7 +13,7 @@ class ShootState: ObservableObject{
     
     var shootServer: ShootServer?
     
-    @Published var cameras = Set<ShootCamera>()
+    @Published var shootCameras = Set<ShootCamera>()
     
     init(){
         shootServer = ShootServer(name: "ShootKit Sample", delegate: self)
@@ -25,13 +25,13 @@ extension ShootState: ShootServerDelegate{
     
     func shootServerDidDiscover(camera: ShootKit.ShootCamera) {
         DispatchQueue.main.async {
-            self.cameras.insert(camera)
+            self.shootCameras.insert(camera)
         }
     }
     
     func shootServerWasDisconnected(from camera: ShootKit.ShootCamera) {
         DispatchQueue.main.async {
-            self.cameras.remove(camera)
+            self.shootCameras.remove(camera)
         }
     }
     var shootCameraShouldCreateSampleBuffers: Bool { true }

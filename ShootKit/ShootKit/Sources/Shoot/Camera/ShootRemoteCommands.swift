@@ -3,7 +3,6 @@
 //  ShootWatchApp Extension
 //
 //  Created by Michael Forrest on 14/10/2020.
-//  Copyright © 2020 Michael Forrest. All rights reserved.
 //
 
 import Foundation

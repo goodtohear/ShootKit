@@ -3,7 +3,6 @@
 //  SliderScales
 //
 //  Created by Michael Forrest on 16/08/2021.
-//  Copyright © 2021 Michael Forrest. All rights reserved.
 //
 
 import Foundation

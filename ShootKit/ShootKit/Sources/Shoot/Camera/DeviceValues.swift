@@ -3,7 +3,6 @@
 //  Shoot
 //
 //  Created by Michael Forrest on 09/08/2022.
-//  Copyright © 2022 Michael Forrest. All rights reserved.
 //
 
 import Foundation

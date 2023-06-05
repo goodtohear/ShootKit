@@ -84,6 +84,8 @@
 		AC2956DC2A29E1BE00EC6CE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC2956DF2A29E1BE00EC6CE7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AC2956E12A29E1BE00EC6CE7 /* Swift_Sample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swift_Sample.entitlements; sourceTree = "<group>"; };
+		AC74D45C2A2E116B0081D607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		AC74D45D2A2E11860081D607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		AC82E9BB2A29E33D006EE79D /* Objective-C Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Objective-C Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC82E9BD2A29E33D006EE79D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AC82E9BE2A29E33D006EE79D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -164,6 +166,8 @@
 		AC2956AD2A29E14B00EC6CE7 = {
 			isa = PBXGroup;
 			children = (
+				AC74D45D2A2E11860081D607 /* LICENSE */,
+				AC74D45C2A2E116B0081D607 /* README.md */,
 				AC2956D12A29E16F00EC6CE7 /* Sample Projects */,
 				AC2956B92A29E14B00EC6CE7 /* ShootKit */,
 				AC2956C52A29E14C00EC6CE7 /* ShootKitTests */,

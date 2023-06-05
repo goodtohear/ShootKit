@@ -29,6 +29,9 @@ Important classes:
 `ShootServer` - discover running instances of Shoot
  - delegate callbacks when devices discovered
  - receive callbacks with CMSampleBuffers on the server delegate or on individual camera delegates
+ 
+ `ShootCamera`
+ - Call `startVideoStream` to start receiving buffers
 
 `ShootControlsView` - manual controls for connected Shoot camera
  - Instantiate in SwiftUI or using `ShootControlsViewFactory.makeShootControls(for camera: minWidth:)->NSViewController`

@@ -14,7 +14,8 @@ ShootKit lets you add [Shoot](https://squares.tv/shoot) and [Video Pencil](https
 Check the sample projects 
 * [ShootKit Swift Sample](ShootKit/Sample%20Projects/Swift%20Sample)
 * [ShootKit Objective-C Sample](ShootKit/Sample%20Projects/Objective-C%20Sample)
-Shoot samples require >=3.8.1 to work. 
+
+*Shoot samples require >=3.8.1 to work*
 
 Clone this project and drag it into your Xcode project, then add ShootKit as a dependency to your project.
 

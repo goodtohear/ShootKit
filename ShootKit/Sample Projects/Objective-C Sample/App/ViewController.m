@@ -140,7 +140,7 @@
 
 #pragma mark - All the other protocol callbacks for reference
 
-- (void)videoPencilDidReceiveFrom:(VideoPencilClient * _Nonnull)from pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer {
+- (void)videoPencilDidReceiveFrom:(VideoPencilClient * _Nonnull)from pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer presentationTimeStamp:(CMTime)presentationTimeStamp presentationDuration:(CMTime)presentationDuration{
     
 }
 // bit awkward that I'm pushing the individual camera callbacks to the server delegate

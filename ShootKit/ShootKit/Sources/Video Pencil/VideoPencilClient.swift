@@ -16,7 +16,7 @@ import AppKit
     func videoPencilDidConnect(_ client: VideoPencilClient)
     func videoPencilDidDisconnect(_ client: VideoPencilClient)
     
-    func videoPencilDidReceive(from: VideoPencilClient, pixelBuffer: CVPixelBuffer)
+    func videoPencilDidReceive(from: VideoPencilClient, pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime)
     func videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer)
 }
 
@@ -306,7 +306,7 @@ extension VideoPencilClient: H265DecoderDelegate{
     }
     
     func videoDecoderDidDecodePixelBuffer(_ decoder: H265Decoder, pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
-        delegate?.videoPencilDidReceive(from: self, pixelBuffer: pixelBuffer)
+        delegate?.videoPencilDidReceive(from: self, pixelBuffer: pixelBuffer, presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
     }
     func videoDecoderDidDecodeSampleBuffer(_ decoder: H265Decoder, sampleBuffer: CMSampleBuffer) {
         DispatchQueue.main.async {

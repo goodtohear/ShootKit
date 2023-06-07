@@ -46,7 +46,7 @@ extension VideoPencilState: VideoPencilClientDelegate{
     var videoPencilClientShouldCreateSampleBuffers: Bool {
         true // save extra processing work by setting this to false if you just want pixel buffers
     }
-    func videoPencilDidReceive(from: VideoPencilClient, pixelBuffer: CVPixelBuffer) {
+    func videoPencilDidReceive(from: VideoPencilClient, pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
         // We're using sample buffers for this demo but you can take the pixelBuffer instead by implementing this method.
     }
     func videoPencilDidReceive(from: VideoPencilClient, sampleBuffer: CMSampleBuffer) {

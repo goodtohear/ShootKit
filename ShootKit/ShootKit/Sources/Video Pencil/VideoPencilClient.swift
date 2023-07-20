@@ -108,6 +108,9 @@ import AppKit
                 self.tryReconnecting()
             }
         }
+        // send the device name with the initial connection
+        connection.send(content: name.data(using: .unicode), completion: .idempotent)
+        
         connection.start(queue: queue)
         self.connection = connection
         awaitNextMessage()
@@ -116,11 +119,10 @@ import AppKit
         guard let connection = connection else { return }
         switch(newState){
         case .ready:
+            log(message: "Video Pencil connection ready, awaiting message", color: .systemMint)
             DispatchQueue.main.async {
                 self.delegate?.videoPencilDidConnect(self)
             }
-            log(message: "Video Pencil connection ready, awaiting message", color: .systemMint)
-            connection.send(content: name.data(using: .unicode), completion: .idempotent)
             awaitNextMessage()
         case .failed(let error):
             log(message: "Video Pencil connection failed: " + error.localizedDescription, color: .systemRed)

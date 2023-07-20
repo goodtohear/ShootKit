@@ -19,6 +19,7 @@ struct ShootKit{
         parameters.multipathServiceType = .disabled
         parameters.serviceClass = .interactiveVideo
         parameters.allowLocalEndpointReuse = false // true
+        parameters.allowFastOpen = true
         
         let videoOptions = NWProtocolFramer.Options(definition: VideoProtocol.definition)
         parameters.defaultProtocolStack.applicationProtocols.insert(videoOptions, at: 0)

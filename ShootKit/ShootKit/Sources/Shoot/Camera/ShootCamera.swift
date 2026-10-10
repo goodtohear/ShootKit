@@ -75,6 +75,8 @@ import VideoToolbox
         case .ready:
             log("Shoot connection ready", color: .systemGreen)
             sendFramedMessage(data: "Hello".data(using: .utf8), id: "Hello", type: .handshake, idempotent: true)
+            // Must follow the handshake: Shoot cancels the connection if the first message is anything else.
+            sendFramedMessage(data: try? JSONEncoder().encode(PeerCapabilities(acceptsVideoFrameHeaders: true)), id: "capabilities", type: .capabilities)
             awaitNextMessage()
         case .failed(let error):
             log("Shoot connection failed -- \(error.debugDescription)", color: .systemRed)
@@ -130,6 +132,8 @@ import VideoToolbox
             }
         case .videoFrame:
             self.decode(frame: data)
+        case .videoFrameWithHeader:
+            self.decoder?.decodeFrameWithHeader(data)
             
         case .control:
             DispatchQueue.main.async {

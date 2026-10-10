@@ -9,7 +9,7 @@ import Foundation
 import VideoToolbox
 
 protocol H265EncoderDelegate:AnyObject, ConnectionLogger {
-    func videoEncoderDidYieldVideoData(_ encoder : H265Encoder, compressedVideo : Data)
+    func videoEncoderDidYieldVideoData(_ encoder : H265Encoder, compressedVideo : Data, presentationTimeStamp: CMTime)
     func videoEncoderDidExtractParameterSet(_ encoder : H265Encoder, parameterSet: [Data])
     func videoEncoderDidEncodeSampleBuffer(_ encoder: H265Encoder, sampleBuffer: CMSampleBuffer)
     func videoEncoderDidFail(_ encoder: H265Encoder, error: OSStatus)
@@ -170,9 +170,10 @@ class H265Encoder {
             data.append(p, count: totalLength)
             let byteCount = data.count
             
+            let presentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
             callBackQueue.async { [weak encoder] in
                 if let encoder = encoder{
-                    encoder.delegate?.videoEncoderDidYieldVideoData(encoder, compressedVideo: data)
+                    encoder.delegate?.videoEncoderDidYieldVideoData(encoder, compressedVideo: data, presentationTimeStamp: presentationTimeStamp)
                     encoder.addToTotal(bytes: byteCount)
                 }
             }

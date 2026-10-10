@@ -36,6 +36,10 @@ class H265Decoder {
     @Published var totalBytesDecoded: Int = 0
     
     var decompressionSession : VTDecompressionSession?
+
+    /// Converts the sender's timestamps to this Mac's host clock.
+    let remoteClockMap = RemoteClockMap()
+    private let jsonDecoder = JSONDecoder()
     var callback : VTDecompressionOutputCallback?
     
     var pixelBufferPool: CVPixelBufferPool?
@@ -207,19 +211,38 @@ class H265Decoder {
             self.decodeByte(data: data, size: length)
         }
     }
-    private func decodeByte(data:Data,size:UInt32) {
+    /// Decodes a videoFrameWithHeader message. The timestamp handed to the delegate is the time
+    /// on this Mac's host clock at which the frame should be displayed.
+    func decodeFrameWithHeader(_ payload: Data) {
+        let headerLengthSize = MemoryLayout<UInt32>.size
+        guard payload.count > headerLengthSize else { return }
+        let headerLength = Int(payload.prefix(headerLengthSize).withUnsafeBytes { UInt32(littleEndian: $0.loadUnaligned(as: UInt32.self)) })
+        guard payload.count >= headerLengthSize + headerLength else { return }
+        let headerData = payload.subdata(in: headerLengthSize ..< headerLengthSize + headerLength)
+        guard let header = try? jsonDecoder.decode(VideoFrameHeader.self, from: headerData) else {
+            delegate?.log(message: "Invalid video frame header \(headerData)", color: .red)
+            return
+        }
+        let compressedFrame = payload.subdata(in: (headerLengthSize + headerLength) ..< payload.count)
+        // Consult the clock map here, on arrival, not later on the decode queue where the frame may have waited.
+        let displayTime = remoteClockMap.displayHostTime(forSenderPresentationTimeStamp: header.presentationTimeStamp)
+        decodeQueue.async { [weak self] in
+            self?.decodeByte(data: compressedFrame, size: UInt32(compressedFrame.count), displayTime: displayTime, duration: header.duration ?? .invalid)
+        }
+    }
+
+    private func decodeByte(data:Data,size:UInt32, displayTime: CMTime = .invalid, duration: CMTime = .invalid) {
         if parameterSet == nil {
             return
         }
         if initDecoder(){
-            decode(frame: [UInt8](data), size: size)
+            decode(frame: [UInt8](data), size: size, displayTime: displayTime, duration: duration)
         }
     }
     
-    private func decode(frame:[UInt8],size:UInt32) {
+    private func decode(frame:[UInt8],size:UInt32, displayTime: CMTime, duration: CMTime) {
         //
         var blockBuffer: CMBlockBuffer?
-        var frame1 = frame
         //        var memoryBlock = frame1.withUnsafeMutableBytes({$0}).baseAddress
         //        var ddd = Data(bytes: frame, count: Int(size))
         //Create blockBuffer
@@ -235,19 +258,25 @@ class H265Decoder {
          Parameter 9: newBBufOut blockBuffer address, cannot be empty
          */
         let blockState = CMBlockBufferCreateWithMemoryBlock(allocator: kCFAllocatorDefault,
-                                                            memoryBlock: &frame1,
+                                                            memoryBlock: nil,
                                                             blockLength: Int(size),
-                                                            blockAllocator: kCFAllocatorNull,
+                                                            blockAllocator: kCFAllocatorDefault,
                                                             customBlockSource: nil,
                                                             offsetToData:0,
                                                             dataLength: Int(size),
-                                                            flags: 0,
+                                                            flags: kCMBlockBufferAssureMemoryNowFlag,
                                                             blockBufferOut: &blockBuffer)
         if blockState != noErr {
             self.delegate?.log(message: "Failed to create blockBuffer \(OSErrorCodeDescription(blockState))", color: .red)
             return
         }
-        //
+        // Copy the bytes into memory the block buffer owns, so they stay valid for as long as the decoder needs them.
+        let copyState = CMBlockBufferReplaceDataBytes(with: frame, blockBuffer: blockBuffer!, offsetIntoDestination: 0, dataLength: Int(size))
+        if copyState != noErr {
+            self.delegate?.log(message: "Failed to copy frame into blockBuffer \(OSErrorCodeDescription(copyState))", color: .red)
+            return
+        }
+        var timing = CMSampleTimingInfo(duration: duration, presentationTimeStamp: displayTime, decodeTimeStamp: .invalid)
         var sampleSizeArray :[Int] = [Int(size)]
         var sampleBuffer :CMSampleBuffer?
         //Create sampleBuffer
@@ -266,8 +295,8 @@ class H265Decoder {
                                                    dataBuffer: blockBuffer,
                                                    formatDescription: decodeDesc,
                                                    sampleCount: CMItemCount(1),
-                                                   sampleTimingEntryCount: CMItemCount(),
-                                                   sampleTimingArray: nil,
+                                                   sampleTimingEntryCount: CMItemCount(1),
+                                                   sampleTimingArray: &timing,
                                                    sampleSizeEntryCount: CMItemCount(1),
                                                    sampleSizeArray: &sampleSizeArray,
                                                    sampleBufferOut: &sampleBuffer)
@@ -301,16 +330,6 @@ class H265Decoder {
         DispatchQueue.main.async {
             self.totalBytesDecoded += Int(size)
 //            self.numberOfFramesBeingDecoded = numberOfFramesBeingDecoded
-        }
-        
-        
-        let attachments:CFArray? = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, createIfNecessary: true)
-        if let attachmentArray = attachments {
-            let dic = unsafeBitCast(CFArrayGetValueAtIndex(attachmentArray, 0), to: CFMutableDictionary.self)
-
-            CFDictionarySetValue(dic,
-                                 Unmanaged.passUnretained(kCMSampleAttachmentKey_DisplayImmediately).toOpaque(),
-                                 Unmanaged.passUnretained(kCFBooleanTrue).toOpaque())
         }
     }
     

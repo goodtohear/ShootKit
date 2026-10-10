@@ -49,6 +49,7 @@
 		AC82EA372A2A5191006EE79D /* CameraSource.m in Sources */ = {isa = PBXBuildFile; fileRef = AC82EA362A2A5191006EE79D /* CameraSource.m */; };
 		AC8728F53023920A00BF35E5 /* CoreImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8728F43023920A00BF35E5 /* CoreImageView.m */; };
 		AC87292630247AD100BF35E5 /* CoreImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC87292530247AD100BF35E5 /* CoreImageView.swift */; };
+		AC9C032F3079F89800504B15 /* RemoteClockMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC9C032E3079F89800504B15 /* RemoteClockMap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +134,7 @@
 		AC8728F3302391FB00BF35E5 /* CoreImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreImageView.h; sourceTree = "<group>"; };
 		AC8728F43023920A00BF35E5 /* CoreImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreImageView.m; sourceTree = "<group>"; };
 		AC87292530247AD100BF35E5 /* CoreImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreImageView.swift; sourceTree = "<group>"; };
+		AC9C032E3079F89800504B15 /* RemoteClockMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteClockMap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,6 +336,7 @@
 		AC82E9E12A29E8F2006EE79D /* AV */ = {
 			isa = PBXGroup;
 			children = (
+				AC9C032E3079F89800504B15 /* RemoteClockMap.swift */,
 				AC82EA0C2A29EF83006EE79D /* CMTIme+Extensions.swift */,
 				AC82EA0A2A29EF59006EE79D /* H265Decoder.swift */,
 				AC82EA222A2A2204006EE79D /* H265Encoder.swift */,
@@ -613,6 +616,7 @@
 				AC82EA072A29EAE0006EE79D /* ShootControlMessage.swift in Sources */,
 				AC82E9F32A29E91F006EE79D /* DeviceValues.swift in Sources */,
 				AC82EA022A29EA84006EE79D /* VideoProtocol.swift in Sources */,
+				AC9C032F3079F89800504B15 /* RemoteClockMap.swift in Sources */,
 				AC82EA232A2A2204006EE79D /* H265Encoder.swift in Sources */,
 				AC82E9F22A29E91F006EE79D /* SliderScales.swift in Sources */,
 				AC82EA052A29EAC6006EE79D /* VideoMessageType.swift in Sources */,

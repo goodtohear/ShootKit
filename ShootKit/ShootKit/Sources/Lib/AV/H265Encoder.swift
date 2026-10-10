@@ -142,7 +142,8 @@ class H265Encoder {
                         encoder?.parameterSet = parameterSet
                         encoder?.delegate?.log(message: "Encoding parameters extracted from sampleBuffer: \(parameterSet)", color: .green)
                     }
-                    callBackQueue.async {
+                    callBackQueue.async { [weak encoder] in
+                        guard let encoder else { return }
                         encoder.delegate?.videoEncoderDidExtractParameterSet(encoder, parameterSet: parameterSet)
                     }
                 }

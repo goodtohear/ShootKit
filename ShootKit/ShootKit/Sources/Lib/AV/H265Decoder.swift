@@ -186,12 +186,14 @@ class H265Decoder {
                 }
                 guard let imageBuffer = imageBuffer else {
                     delegate.log(message: "Decoding error: Image buffer creation failed - \(ErrorCodeLookup[status] ?? "\(status)")", color: .red)
-                    decoder.callBackQueue.async {
-                        delegate.videoDecoder(decoder, failedWith: status)
+                    decoder.callBackQueue.async {[weak delegate, weak decoder] in
+                        guard let decoder else { return }
+                        delegate?.videoDecoder(decoder, failedWith: status)
                     }
                     return
                 }
-                decoder.callBackQueue.async {
+                decoder.callBackQueue.async { [weak delegate, weak decoder] in
+                    guard let delegate, let decoder else { return }
                     delegate.videoDecoderDidDecodePixelBuffer(decoder, pixelBuffer: imageBuffer, presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
                 }
             }

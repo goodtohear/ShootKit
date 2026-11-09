@@ -16,6 +16,8 @@ ShootKit lets you add [Shoot](https://squares.tv/shoot) and [Video Pencil](https
 pod 'ShootKit', git: 'https://github.com/goodtohear/ShootKit.git', branch: 'main'
 ```
 
+To get the latest version, run `pod update ShootKit`.
+
 Add to Bonjour Services (Info.plist)
 ```
  _videopencil_ios._tcp
@@ -49,6 +51,8 @@ self.videoPencilClient =  [
 }
 
 ```
+
+Drawing frames reach the delegate evenly paced, each at its display time on the Mac's host clock (passed as `presentationTimeStamp`), a few hundredths of a second after it was drawn on the iPad. To get each frame as soon as it's decoded and pace them yourself, set `pacesReceivedFrames` to `false`.
 
 
 ### Swift

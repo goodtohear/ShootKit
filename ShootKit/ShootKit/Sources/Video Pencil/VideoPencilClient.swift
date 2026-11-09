@@ -148,6 +148,7 @@ import CoreImage
         case .cancelled:
             // guaranteed to be final
             log(message: "Video Pencil connection cancelled \(connection.endpoint.debugDescription)", color: .systemRed)
+            stopPacing()
             DispatchQueue.main.async {
                 self.connection = nil
                 self.delegate?.videoPencilDidDisconnect(self)
@@ -238,6 +239,15 @@ import CoreImage
     /// What Video Pencil has told us it can receive. Nil until its capabilities message arrives.
     var capabilitiesReceivedFromPeer: PeerCapabilities?
     var decoder: H265Decoder?
+
+    /// Drawing frames are handed to the delegate evenly, each at its display time (a few
+    /// hundredths of a second after it was drawn), rather than the moment they decode: the
+    /// network delivers them in bunches, which made the drawing look jerky. Turn off to get each
+    /// frame as soon as it's decoded and pace them yourself
+    @objc public var pacesReceivedFrames = true
+    let frameSchedule = DecodedFrameSchedule<CVPixelBuffer>()
+    var pacingTimer: DispatchSourceTimer?
+    static let pacingRate = 60
     func createDecoderIfNeeded(){
         if decoder == nil {
             decoder = H265Decoder(width: 1920, height: 1080, callbackQueue: queue)
@@ -297,6 +307,7 @@ import CoreImage
         connection = nil
         encoder = nil
         decoder = nil
+        stopPacing()
     }
 }
 
@@ -397,8 +408,48 @@ extension VideoPencilClient: ConnectionLogger{
 
 extension VideoPencilClient: H265DecoderDelegate{
     
+    // on `queue`
     func videoDecoderDidDecodePixelBuffer(_ decoder: H265Decoder, pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
+        // Timed frames (Video Pencil 2.1 and later) carry their display time on this Mac's host
+        // clock: they wait for it. Untimed ones, from older versions, go straight out
+        guard pacesReceivedFrames, presentationTimeStamp.isValid else {
+            deliver(pixelBuffer, presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
+            return
+        }
+        frameSchedule.add(pixelBuffer, displayTime: presentationTimeStamp, duration: presentationDuration)
+        startPacingIfNeeded()
+    }
+
+    private func deliver(_ pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime, presentationDuration: CMTime) {
         delegate?.videoPencilDidReceive(from: self, frame: CIImage(cvPixelBuffer: pixelBuffer), presentationTimeStamp: presentationTimeStamp, presentationDuration: presentationDuration)
+    }
+
+    /// Ticks at 60 a second and hands on whichever frame is due, so frames go out as evenly as
+    /// they were drawn (they arrive bunched by the network and the decoder)
+    private func startPacingIfNeeded() {
+        guard pacingTimer == nil else { return }
+        let timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
+        timer.schedule(deadline: .now(), repeating: .nanoseconds(Int(1_000_000_000 / Self.pacingRate)), leeway: .milliseconds(1))
+        timer.setEventHandler { [weak self] in
+            self?.deliverDueFrame()
+        }
+        pacingTimer = timer
+        timer.resume()
+    }
+
+    private func deliverDueFrame() {
+        let now = CMClockGetTime(CMClockGetHostTimeClock())
+        let refreshInterval = CMTime(value: 1, timescale: CMTimeScale(Self.pacingRate))
+        guard let due = frameSchedule.takeFrameToShow(atRefreshTime: now, refreshInterval: refreshInterval) else { return }
+        deliver(due.frame, presentationTimeStamp: due.displayTime, presentationDuration: due.duration)
+    }
+
+    func stopPacing() {
+        queue.async { [self] in
+            pacingTimer?.cancel()
+            pacingTimer = nil
+            frameSchedule.removeAll()
+        }
     }
     
     func videoDecoder(_ decoder: H265Decoder, failedWith error: OSStatus) {

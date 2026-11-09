@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'ShootKit'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'Talk to Shoot cameras and Video Pencil from your Mac app.'
   s.description      = <<-DESC
     ShootKit provides a Swift and Objective-C API for integrating Shoot camera
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.author           = { 'Michael Forrest' => 'michael.forrest@gmail.com' }
   s.source           = { :git => 'https://github.com/goodtohear/ShootKit.git', :tag => s.version.to_s }
 
-  s.osx.deployment_target = '11.0'
+  s.osx.deployment_target = '12.0'
   s.swift_versions        = ['5.0']
 
   s.source_files = 'ShootKit/ShootKit/Sources/**/*.swift'
